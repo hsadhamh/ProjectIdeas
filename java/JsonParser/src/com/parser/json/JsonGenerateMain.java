@@ -16,10 +16,7 @@ public class JsonGenerateMain {
 		{
 			String sJson = JsonSerializer.getInstance().ConvertToString(objList);
 			Logger.getInstance().Debug("Json formed [%s].", sJson);
-			/*
-			sJson = JsonSerializer.getInstance().ConvertToString(objList);
-			Logger.getInstance().Debug("Json formed [%s].", sJson);
-			*/
+			
 		}
 		catch(Exception ex){
 			Logger.getInstance().Debug("Exception on convert.");

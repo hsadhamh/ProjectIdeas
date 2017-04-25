@@ -19,15 +19,11 @@ public class JsonSerializer {
 	
 	public JsonSerializer(){
 		mObjMapper = new ObjectMapper();
-		// mObjMapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
 	}	
 	
 	public String ConvertToString(Object obj) throws JsonProcessingException, UnsupportedEncodingException{
-		//	return mObjMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
 		byte [] sStringVal = mObjMapper.writeValueAsBytes(obj);
 		String s = new String(sStringVal);
-		Logger.getInstance().Debug("Json formed [%s].", s);
 		return s;
-		//return mObjMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
 	}
 }
