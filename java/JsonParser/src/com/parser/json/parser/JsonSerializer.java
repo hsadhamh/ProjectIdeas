@@ -26,7 +26,12 @@ public class JsonSerializer {
 		mObjMapper.setSerializationInclusion(Include.NON_NULL);
 	}	
 	
-	public String SerializeToString(Object obj) throws JsonProcessingException, UnsupportedEncodingException{
+	public String SerializeToString(Object obj, boolean printPretty) 
+			throws JsonProcessingException, UnsupportedEncodingException{
+		
+		if(printPretty)
+			return mObjMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+		
 		return mObjMapper.writeValueAsString(obj);
 	}
 	
