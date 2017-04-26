@@ -12,6 +12,7 @@ import com.parser.json.database.DatabaseConnection.DbEngine;
 import com.parser.json.events.Event;
 import com.parser.json.events.EventCategory;
 import com.parser.json.events.EventList;
+import com.parser.json.events.EventProperty.Religion;
 import com.parser.json.events.Location;
 import com.parser.json.events.Recurrence.RecurType;
 import com.parser.json.events.WebReference;
@@ -71,9 +72,11 @@ public class EventsRetrieval {
 					oEvent.getProperty().getRecur().setType(RecurType.valueOf(result.getInt(7)));
 					oEvent.getProperty().getRecur().setValue(result.getInt(8));
 					
+					oEvent.getProperty().setReligion(getReligion(result.getInt(10)));
+					
 					if(result.getInt(9) == 1)
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.HOLIDAY.getValue());
-					if(result.getInt(9) == 1)
+					if(result.getInt(10) != 0)
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.RELIGIOUS.getValue());
 					if(result.getInt(11) == 1)
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.ALL_DAY.getValue());	
@@ -127,8 +130,8 @@ public class EventsRetrieval {
 				
 				while(result != null && result.next())
 				{
-					int nLocType = result.getInt(1);
-					long nLocRef = result.getLong(2);
+					int nLocType = result.getInt(2);
+					long nLocRef = result.getLong(3);
 					switch(nLocType)
 					{
 					case 1:
@@ -146,7 +149,7 @@ public class EventsRetrieval {
 							while(countrySet != null && countrySet.next())
 							{
 								Location loc = new Location();
-								loc.setCountry(countrySet.getString(1));
+								loc.setCountry(countrySet.getString(2));
 								sLocList.add(loc);
 							}
 						}
@@ -173,8 +176,8 @@ public class EventsRetrieval {
 							while(StateSet != null && StateSet.next())
 							{
 								Location loc = new Location();
-								loc.setCountry(StateSet.getString(4));
-								loc.setState(StateSet.getString(1));
+								loc.setCountry(StateSet.getString(5));
+								loc.setState(StateSet.getString(2));
 								sLocList.add(loc);
 							}
 						}
@@ -201,9 +204,9 @@ public class EventsRetrieval {
 							while(citySet != null && citySet.next())
 							{
 								Location loc = new Location();
-								loc.setCountry(citySet.getString(6));
-								loc.setState(citySet.getString(3));
-								loc.setCity(citySet.getString(1));
+								loc.setCountry(citySet.getString(7));
+								loc.setState(citySet.getString(4));
+								loc.setCity(citySet.getString(2));
 								sLocList.add(loc);
 							}
 						}
@@ -237,5 +240,28 @@ public class EventsRetrieval {
 		if(mysql == null)
 			mysql = new DatabaseConnection();
 		return mysql.LoadDatabaseDriver(DbEngine.MYSQL);
+	}
+	
+	public Religion getReligion(int n){
+		switch(n)
+		{
+		case 1:
+			return Religion.Islam;
+		case 2:
+			return Religion.Sikh;
+		case 3:
+			return Religion.Buddish;
+		case 4:
+			return Religion.Hindu;
+		case 5:
+			return Religion.Jewish;
+		case 6:
+			return Religion.Christian;
+		case 7:
+			return Religion.Orthodox;
+		case 8:
+			return Religion.Jainism;
+		}
+		return null;
 	}
 }
