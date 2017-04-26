@@ -26,7 +26,8 @@ public class EventsRetrieval {
 			+ "ev.id, ev.uid, ev.name, ev.description, ev.webref, ev.category, ev.recur_type, ev.recurrence, "
 			+ "sum(case when ep.prop_name like 'holiday' then 1 else 0 end) holiday, "
 			+ "sum(case when ep.prop_name like 'Religion' then ep.prop_value else 0 end) Religion, "
-			+ "sum(case when ep.prop_name like 'All Day' then 1 else 0 end) AllDay "
+			+ "sum(case when ep.prop_name like 'All Day' then 1 else 0 end) AllDay, "
+			+ "ev.created_at, ev.modified_at "
 			+ "from do_events ev join event_prop ep "
 			+ "on ev.id = ep.event_id "
 			+ "group by ev.id";
@@ -76,8 +77,7 @@ public class EventsRetrieval {
 					
 					oEvent.getProperty().setReligion(getReligion(result.getInt(10)));
 					
-					oEvent.getProperty().setModified_at(BigInteger.valueOf(System.currentTimeMillis()/1000));
-					oEvent.getProperty().setCreated_at(BigInteger.valueOf(System.currentTimeMillis()/1000));
+					
 					
 					if(result.getInt(9) == 1)
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.HOLIDAY.getValue());
@@ -85,6 +85,9 @@ public class EventsRetrieval {
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.RELIGIOUS.getValue());
 					if(result.getInt(11) == 1)
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.ALL_DAY.getValue());	
+					
+					oEvent.getProperty().setModified_at(BigInteger.valueOf(result.getLong(13)));
+					oEvent.getProperty().setCreated_at(BigInteger.valueOf(result.getLong(12)));
 					
 					//	Locations
 					oEvent.getLocations().addAll(getEventsLocations(oEvent.getId()));

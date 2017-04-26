@@ -1,8 +1,12 @@
 package com.parser.json.parser;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parser.json.log.Logger;
 
@@ -19,11 +23,15 @@ public class JsonSerializer {
 	
 	public JsonSerializer(){
 		mObjMapper = new ObjectMapper();
+		mObjMapper.setSerializationInclusion(Include.NON_NULL);
 	}	
 	
-	public String ConvertToString(Object obj) throws JsonProcessingException, UnsupportedEncodingException{
-		byte [] sStringVal = mObjMapper.writeValueAsBytes(obj);
-		String s = new String(sStringVal);
-		return s;
+	public String SerializeToString(Object obj) throws JsonProcessingException, UnsupportedEncodingException{
+		return mObjMapper.writeValueAsString(obj);
+	}
+	
+	public <T> Object UnserializeToObject(String sJson, Class<T> valueType) 
+			throws JsonParseException, JsonMappingException, IOException{
+		return mObjMapper.readValue(sJson, valueType);
 	}
 }
