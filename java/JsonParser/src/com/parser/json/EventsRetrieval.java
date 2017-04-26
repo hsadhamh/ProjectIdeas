@@ -1,9 +1,11 @@
 package com.parser.json;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,9 @@ public class EventsRetrieval {
 					oEvent.getProperty().getRecur().setValue(result.getInt(8));
 					
 					oEvent.getProperty().setReligion(getReligion(result.getInt(10)));
+					
+					oEvent.getProperty().setModified_at(BigInteger.valueOf(System.currentTimeMillis()/1000));
+					oEvent.getProperty().setCreated_at(BigInteger.valueOf(System.currentTimeMillis()/1000));
 					
 					if(result.getInt(9) == 1)
 						oEvent.setCategory(oEvent.getCategory() | EventCategory.Category.HOLIDAY.getValue());

@@ -1,5 +1,6 @@
 package com.parser.json.events;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +38,8 @@ public class EventProperty {
 	Recurrence recur;
 	Religion religion;
 	
-	Timestamp created_at;
-	Timestamp modified_at;
+	BigInteger created_at;
+	BigInteger modified_at;
 	
 	public WebReference getWebref() {
 		if(webref == null)
@@ -68,16 +69,16 @@ public class EventProperty {
 	public void setReligion(Religion religion) {
 		this.religion = religion;
 	}
-	public Timestamp getCreated_at() {
+	public BigInteger getCreated_at() {
 		return created_at;
 	}
-	public void setCreated_at(Timestamp created_at) {
+	public void setCreated_at(BigInteger created_at) {
 		this.created_at = created_at;
 	}
-	public Timestamp getModified_at() {
+	public BigInteger getModified_at() {
 		return modified_at;
 	}
-	public void setModified_at(Timestamp modified_at) {
+	public void setModified_at(BigInteger modified_at) {
 		this.modified_at = modified_at;
 	}
 }
