@@ -1,6 +1,10 @@
 package com.parser.json;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 
 import com.parser.json.events.EventList;
 import com.parser.json.log.Logger;
@@ -19,9 +23,15 @@ public class JsonGenerateMain {
 			String sJson = JsonSerializer.getInstance().SerializeToString(objList, true);
 			Logger.getInstance().Debug("Json formed [%s].", sJson);
 			
-			//	Writing to FILE
+			//	Writing to FILE (no encoding)
 			try(PrintWriter out = new PrintWriter("JsonCreated.txt")){
 				out.println(sJson);
+			}
+			
+			try(Writer out1 = new BufferedWriter(
+		            new OutputStreamWriter(new FileOutputStream(
+		                    "JsonCreatedUTF.txt"), "UTF-8"))){
+				out1.write(sJson);
 			}
 			
 			/*
